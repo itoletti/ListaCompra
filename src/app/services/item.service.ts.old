@@ -1,0 +1,39 @@
+import { Injectable } from '@angular/core';
+import { Item } from '../modelos/item';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ItemService {
+
+  items: Item[]= [];
+
+  constructor() { 
+    this.items = [
+      {
+        id:0,
+        titulo: "manzana",
+        precio: 10.50,
+        cantidad: 2,
+        completo: false,
+      },
+      {
+        id:1,
+        titulo: "pera",
+        precio: 8.50,
+        cantidad: 5,
+        completo: true,
+      }
+    ];
+  }
+  
+  getItems() {
+    return this.items
+  }
+
+  addItem(item: Item) {
+    this.items.unshift(item);   
+  }
+}

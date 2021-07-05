@@ -1,0 +1,61 @@
+import { Component, OnInit } from '@angular/core';
+import { ItemService } from '../../services/item.service';
+
+import { Item } from '../../modelos/item'
+
+@Component({
+  selector: 'app-items',
+  templateUrl: './items.component.html',
+  styleUrls: ['./items.component.css']
+})
+export class ItemsComponent implements OnInit {
+
+  items: Item[] = [];
+  total: number = 0;
+
+  constructor(private itemService: ItemService) { }
+
+  ngOnInit(): void {
+    console.log("se ejecuto ngOnInit() de ItemsComponent");
+    this.items = this.itemService.getItems(); 
+    this.getTotal(); 
+  }
+
+  /* metodo ngOnInit() previo a la creacion del servicio
+  ngOnInit(): void {
+    this.items = [
+      {
+        id:0,
+        titulo: "manzana",
+        precio: 10.50,
+        cantidad: 2,
+        completo: false,
+      },
+      {
+        id:1,
+        titulo: "pera",
+        precio: 8.50,
+        cantidad: 5,
+        completo: true,
+      }
+    ];
+    this.getTotal();
+  }
+  */
+
+  deleteItem(item: Item) {
+    this.items = this.items.filter( x => x.id != item.id );
+    this.getTotal();
+  }
+
+  toggleItem(item: Item) {
+    this.getTotal();
+  }
+
+  getTotal() {
+    this.total = this.items
+          .filter( x => !x.completo)
+          .map( x => x.precio * x.cantidad)
+          .reduce((acumulador, x ) => acumulador += x , 0);
+  }
+}
